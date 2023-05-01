@@ -1,0 +1,67 @@
+version: '3.4'
+services:
+  api:
+    container_name: web-api
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.web-api.dev
+      args:
+        - PORT=${PORT}
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    command: >
+      bash -c "cp -rfu /cache/node_modules/. /app/node_modules/
+      && mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
+      && npm run start:watch"
+    depends_on:
+      - redis
+
+  worker:
+    container_name: web-worker
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.web-worker.dev
+      args:
+        - PORT=${WORKER_PORT}
+    ports:
+      - ${WORKER_PORT}:${WORKER_PORT}
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    command: >
+      bash -c "cp -rfu /cache/node_modules/. /app/node_modules/
+      && mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
+      && npm run start:watch:worker"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - $REDIS_LOCAL_PORT:$REDIS_DOCKER_PORT
+    command: redis-server --save 20 1 --loglevel warning --requirepass $REDIS_PASSWORD
+    volumes:
+      - redis:/data
+
+  redis-commander:
+    container_name: redis-view
+    hostname: redis-commander
+    image: ghcr.io/joeferner/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOST=$REDIS_HOST
+      - REDIS_PASSWORD=$REDIS_PASSWORD
+    ports:
+      - '8081:8081'
+volumes:
+  exclude:
+  redis:
+    driver: local

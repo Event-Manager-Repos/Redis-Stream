@@ -1,0 +1,22 @@
+# Define base image
+FROM node:18.14.0
+
+# Create and define the node_modules's cache directory.
+WORKDIR /cache
+
+COPY package.json .
+RUN npm install --silent
+
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
+RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
+
+COPY tsconfig.json ./
+COPY worker ./worker
+COPY .env ./
+
+EXPOSE ${WORKER_PORT}
+
+# RUN npm run build
+# CMD ["npm", "run", "start:watch"]
