@@ -14,7 +14,6 @@ RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
 
 COPY tsconfig.json ./
 COPY worker ./worker
+COPY .redis-config ./
 COPY .env ./
 
-# RUN npm run build
-# CMD ["npm", "run", "start:watch"]
