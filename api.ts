@@ -5,7 +5,7 @@ require('dotenv').config();
 const app = express();
 
 const publish = async (timestamp = new Date().toISOString()) => {
-  const article = {
+  const data = {
     uuid: Math.random().toString(),
     title: 'Testing redis stream',
     description: 'An article on Redis Stream from Ixora Solution Ltd.',
@@ -13,7 +13,7 @@ const publish = async (timestamp = new Date().toISOString()) => {
   };
 
   try {
-    await publishClient.publish(REDIS_STREAM_CHANNEL, JSON.stringify(article));
+    await publishClient.publish(REDIS_STREAM_CHANNEL, JSON.stringify(data));
   } catch (error) {
     console.log('Error in publish on ${REDIS_STREAM_CHANNEL} channel');
     console.log(error);
