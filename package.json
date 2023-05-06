@@ -1,14 +1,13 @@
 {
-  "name": "auth",
+  "name": "redis-stream",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api.js",
   "scripts": {
     "build": "tsc",
     "start:dev": "node -r dotenv/config dist/index.js",
-    "start:watch": "nodemon -r dotenv/config src/index.ts",
-    "start:watch:worker": "nodemon -r dotenv/config worker/index.ts",
-    "test": "jest --watchAll --no-cache  --detectOpenHandles"
+    "start:watch": "nodemon -r dotenv/config api.ts",
+    "start:watch:worker": "nodemon -r dotenv/config worker.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +22,6 @@
   },
   "devDependencies": {
     "concurrently": "^7.2.1",
-    "jest": "^27.5.1",
     "nodemon": "^2.0.16"
   },
   "engines": {

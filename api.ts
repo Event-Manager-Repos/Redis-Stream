@@ -1,5 +1,5 @@
 import express from 'express';
-import { REDIS_STREAM_CHANNEL, publishClient } from '../redis-config';
+import { REDIS_STREAM_CHANNEL, publishClient } from './redis-config';
 require('dotenv').config();
 
 const app = express();
@@ -15,7 +15,7 @@ const publish = async (timestamp = new Date().toISOString()) => {
   try {
     await publishClient.publish(REDIS_STREAM_CHANNEL, JSON.stringify(article));
   } catch (error) {
-    console.log('error in publish article');
+    console.log('Error in publish on ${REDIS_STREAM_CHANNEL} channel');
     console.log(error);
   }
 };

@@ -13,7 +13,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
 
 COPY tsconfig.json ./
-COPY worker ./worker
+COPY .worker ./
 COPY .redis-config ./
 COPY .env ./
 

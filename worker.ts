@@ -1,4 +1,4 @@
-import { REDIS_STREAM_CHANNEL, subscribeClient } from '../redis-config';
+import { REDIS_STREAM_CHANNEL, subscribeClient } from './redis-config';
 
 const subscribe = async () => {
   try {
@@ -6,7 +6,7 @@ const subscribe = async () => {
       console.log(message);
     });
   } catch (error) {
-    console.log('Error in subscribe article');
+    console.log(`Error in subscribe ${REDIS_STREAM_CHANNEL} channel`);
     console.log(error);
   }
 };
