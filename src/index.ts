@@ -1,14 +1,29 @@
 import express from 'express';
+import { publishClient } from './client';
 require('dotenv').config();
 
-const start = async () => {
-  const app = express();
+const app = express();
 
-  app.get('/', (req, res) => res.send(`Welcome from web api ${new Date()}`));
+const publish = async (timestamp = new Date().toISOString()) => {
+  const article = {
+    uuid: '123456',
+    title: 'Testing redis stream',
+    description: 'An article on Redis Stream from Ixora Solution Ltd.',
+    timestamp
+  };
 
-  app.listen(process.env.PORT || 8080, () => {
-    console.log(`Listening api on port ${process.env.PORT || 8080}`);
-  });
+  try {
+    await publishClient.publish('article', JSON.stringify(article));
+    console.log('published article');
+  } catch (error) {
+    console.log('error in publish article');
+    console.log(error);
+  }
 };
 
-start();
+app.get('/', async (req, res) => {
+  await publish();
+  return res.status(200);
+});
+
+app.listen(process.env.PORT);

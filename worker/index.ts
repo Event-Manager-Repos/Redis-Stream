@@ -1,14 +1,16 @@
-import express from 'express';
-require('dotenv').config();
+import { subscribeClient } from './client';
 
-const start = async () => {
-  const app = express();
-
-  app.get('/', (req, res) => res.send(`Welcome from web worker ${new Date()}`));
-
-  app.listen(process.env.WORKER_PORT || 8080, () => {
-    console.log(`Listening worker on port ${process.env.WORKER_PORT || 8080}`);
-  });
+const subscribe = async () => {
+  try {
+    await subscribeClient.subscribe('article', message => {
+      console.log(message);
+    });
+  } catch (error) {
+    console.log('Error in subscribe article');
+    console.log(error);
+  }
 };
 
-start();
+(async () => {
+  await subscribe();
+})();
