@@ -1,5 +1,4 @@
-import { REDIS_STREAM_CHANNEL } from '../redis-config';
-import { subscribeClient } from './client';
+import { REDIS_STREAM_CHANNEL, subscribeClient } from '../redis-config';
 
 const subscribe = async () => {
   try {

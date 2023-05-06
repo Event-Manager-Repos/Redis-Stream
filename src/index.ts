@@ -1,6 +1,5 @@
 import express from 'express';
-import { publishClient } from './client';
-import { REDIS_STREAM_CHANNEL } from '../redis-config';
+import { REDIS_STREAM_CHANNEL, publishClient } from '../redis-config';
 require('dotenv').config();
 
 const app = express();
